@@ -1,0 +1,45 @@
+body{
+	background: #3DC9B3;
+	font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+}
+
+.container{
+	text-align: center;
+}
+
+.title{
+	color: #fff;
+	font-size: 40px;
+}
+.title p span{
+	color:#AFFFF4;
+	font-size: 40px;
+}
+
+button{
+	background:#3DC9B3;
+	background:rgba(255,255,255,0);
+	border:1px solid #fff;
+	width: 20% ;
+	min-width: 120px;
+	height: 50px;
+	font-size: 1.2em;
+	letter-spacing: 1px;
+	color:#fff;
+	font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+	margin: 30px 10px;
+	text-transform:uppercase;
+	transition:all 0.5s ease-in-out 0s;
+	animation-name:fadeInUp;
+	animation-duration:2s;
+	animation-fill-mode:both;
+	animation-delay:2s;
+
+
+
+}
+
+button:hover{
+	background:#309383;
+	
+}
