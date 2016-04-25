@@ -12,59 +12,169 @@ router.get('/', function(req, res, next) {
 });
 
 
+router.post('/send_sms', function(req, res){
+  var phone = req.body.phone;
+  var code = Math.random().toString().substr(2,6);
+  //console.log(sms_config);
+  app.smsSend({
+    sms_free_sign_name:'注册验证',
+    sms_param:{"code": code, "product": '.NET协会'},
+    rec_num:phone,
+    sms_template_code: 'SMS_7221331'
+  }, function( response){
+    if(!response) {
+      console.log(response);
+      return res.json({
+        "code":"1",
+        "msg":"error"
+      });
+    }
+    if(response.error_response){
+      console.log(response);
+      return res.json({
+        "code":"1",
+        "msg":"error"
+      });
+    }
+    console.log(response);
+    return res.json({
+      "code":"0",
+      "msg":"success"
+    });
+    req.session.phone = phone;
+    req.session.code = code;
+  });
+
+});
+
 // 注册路由
-router.post('/send', function(req, res, next) {
+router.post('/sendAll', function(req, res) {
   var phone = req.body.phone;
   var code = req.body.code;
+  var name = req.body.name;
+  var gender = req.body.gender;
+  var college = req.body.college;
+  console.log(req.body);
   // todo 判断手机号格式
-  if (!phone) {
-    // error phone, reutrn error message
+  function test_phone() {
+    var reg = /^(13[0-9)|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+    if (reg.test(phone)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function test_name() {
+    if (name) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function test_gender() {
+    if (gender && gender != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function test_college() {
+    if (college && college != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  console.log('qqq');
+  function test_code() {
+    if (code.length == 6) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  console.log('ssss');
+
+  console.log(test_phone());
+  // 判断 name,等字段格式是否正确...
+  if (!(test_phone()&& test_name() && test_college() && test_gender()&& test_code()) ){
+    console.log('test');
     return res.json({
       code: 1,
-      msg: 'error phone'
+      msg: 'error'
     });
   }
 
+
+  // 下面这行代码没有执行，说明是上面判断的问题，具体问题，还没发现
+  console.log('ssdasffewss');
   // todo code
   // 判断 验证码是否正确
-  if (!(code == req.session.code &&  phone == req.session.phone)) {
+  if (!(code == req.session.code && phone == req.session.phone)) {
     return res.json({
       code: 2,
-      msg: 'error verify code'
+      msg: 'error code'
     });
   }
 
-  // 判断 name,等字段是否为空...
-
+  console.log('form success');
   // 全部正确之后,存入数据库
-  //req.getCon ....
+  //连接数据库
+  req.getConnection(function (err, connection) {
+    console.log('get connection error : ', err);
+    if (err) {
+      return res.json({
+        code: 3,
+        msg: 'error connection'
+      });
+    }
 
-  // 存入成功
-  return res.json({
-    code: 0,
-    msg: 'success'
-  })
+    //插入数据
+    var insert = 'INSERT INTO session_code VALUES(name, gender, college, phone)';
+    connection.query(insert, function (err) {
+      console.log('insert error: ', err);
+      if (err) {
+        return res.json({
+          code: 4,
+          msg: 'error insert'
+        });
+      } else {
+        // 存入成功
+        return res.json({
+          code: 0,
+          msg: 'success'
+        });
+      }
+    });
+  });
 
 });
 
 
-
-/**
-
+/*
 // 发送短信验证码
-router.post('/sms', function(req, res, next) {
+router.post('/send_sms', function(req, res, next) {
   var phone = req.body.phone;
   // 生成4位随机短信验证码
   var code = Math.random().toString().substr(2,6);
 
   app.smsSend({
-    sms_free_sign_name: sms_config.sms_free_sign_name, //短信配置
-    sms_param: {
-      "code": code, //验证码内容
-      "product": sms_config.product  //短信配置
-    },
-    rec_num: phone, // 目标手机号
-    sms_template_code: sms_config.sms_template_code  //短信配置
+   // sms_free_sign_name: sms_config.sms_free_sign_name, //短信配置
+   // sms_param: {
+    //  "code": code, //验证码内容
+     // "product": sms_config.product  //短信配置
+    //},
+    //rec_num: phone, // 目标手机号
+    //sms_template_code: sms_config.sms_template_code  //短信配置
+
+    sms_free_sign_name:'注册验证',
+    sms_param:{"code": "1234", "product": '.NET协会'},
+    rec_num:18224026886,
+    sms_template_code: 'SMS_7221331'
+
   }, function(response) {
     // 短信发送后的回调函数
 
@@ -97,8 +207,8 @@ router.post('/sms', function(req, res, next) {
   });
 });
 
-
 */
+
 
 
 module.exports = router;

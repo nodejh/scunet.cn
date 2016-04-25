@@ -185,7 +185,7 @@ $(window).load(function() {
 	function get_college() {
 		var college = $('#college[name="college"] option:selected').val();
 		if (college && college !=0 ) {
-			return true;
+			return college;
 		} else {
 			sweetAlert("Oops...", "Something went wrong with your college!", "error");
 			return false;
@@ -208,13 +208,48 @@ $(window).load(function() {
 	function get_sms() {
 		var sms = $('#sms').val();
 		if (sms.length == 6) {
-			return true;
+			return sms;
 		} else {
 			sweetAlert("Oops...", "Something went wrong with your verify code!", "error");
 			return false;
 		}
 	}
 
+	$('#send_sms').click(function(){
+		var phone = get_phone();
+		if(!phone){
+			sweetAlert("Oops...", "Something went wrong with your phone!", "error");
+		} else{
+			var data ={
+				phone: phone
+			};
+
+			$.post('/send_sms', data, function (res) {
+				if(res.code == 0){
+					console.log(res.msg);
+					$('#send_sms').addClass("sms_active");
+					$('#send_sms').text(count +"s后重新获取验证码");
+					//setTimeout(function(){
+					//	var count = 60;
+					//	if(count == 0){
+					//		$('#send_sms').removeClass("sms_active");
+					//		$('#send_sms').text("获取验证码");
+					//		count = 60;
+					//	} else{
+					//		$('#send_sms').text(count +"s后重新获取验证码");
+					//		count--;
+					//	}
+					//}, 1000);
+				} else{
+					console.log(res.msg);
+					sweetAlert("Oops...", "Something went wrong with your phone!","error" );
+				}
+
+			});
+
+		}
+
+	});
 
 /**
  // 发送短信后,给发送按钮题添加 "sms_active" 样式
@@ -290,20 +325,22 @@ $(window).load(function() {
 		//swal("Good job!", "You clicked the button!", "success")
 		// 发送注册信息到后台
 
-		$.post('/send', data, function(res) {
+		$.post('/sendAll', data, function(res) {
+			console.log(data);
 			if (res.code == 0) {
 				swal("Good job!",  "<strong>" + name + "</strong>您好, 感谢您的耐心填写, 您已成功报名, 我们将随后与您联系!", "success")
-			} else {
-
-				// 其他各种提示,比如验证码错误,手机号格式错误
-				// code==1  验证码错误; code ==2 手机号格式错误
+			}
+			if(res.code == 1) {
+				sweetAlert("Oops...", "格式错误!", "error"); //我觉得不需要显示具体是哪个格式错误，因为这是针对不经过表单填写直接发送数据的
+			}
+			if(res.code == 2){
 				sweetAlert("Oops...", "短信验证码错误!", "error");
+			}
+			if(res.code == 3 || res.code == 4){
+				sweetAlert("Oops...", "连接数据库失败!", "error");
 			}
 		});
 
 	});
-
-
-
 
 });

@@ -5,8 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
 var routes = require('./routes/index');
+var mysql = require('mysql');
+var myConnection = require('express-myconnection');
 
 var app = express();
 
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 配置session
 app.use(session({
   secret: 'keyboard cat',
-  cookie: {maxAge: 60000000000},
+  cookie: {maxAge: 60000},
   proxy: true,
   resave: true
 }));
@@ -62,6 +63,16 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+var mysqlConnection = {
+  host:'localhost',
+  user:'root',
+  password:'root',
+  port:3306,
+  database:'session'
+}
+app.use(myConnection(mysql,mysqlConnection, 'request'));
 
 
 module.exports = app;
