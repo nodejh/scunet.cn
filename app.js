@@ -8,6 +8,7 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var mysql = require('mysql');
 var myConnection = require('express-myconnection');
+var mySqlConnection = require('./config/mysql');
 
 var app = express();
 
@@ -31,6 +32,8 @@ app.use(session({
   resave: true
 }));
 
+
+app.use(myConnection(mysql,mySqlConnection, 'request'));
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -65,14 +68,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-var mysqlConnection = {
-  host:'localhost',
-  user:'root',
-  password:'root',
-  port:3306,
-  database:'session'
-}
-app.use(myConnection(mysql,mysqlConnection, 'request'));
+
 
 
 module.exports = app;

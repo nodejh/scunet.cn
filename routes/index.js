@@ -17,10 +17,10 @@ router.post('/send_sms', function(req, res){
   var code = Math.random().toString().substr(2,6);
   //console.log(sms_config);
   app.smsSend({
-    sms_free_sign_name:'注册验证',
-    sms_param:{"code": code, "product": '.NET协会'},
+    sms_free_sign_name:'注册验证', //用sms_config会报错签名不合法
+    sms_param:{"code": code, "product": sms_config.product},
     rec_num:phone,
-    sms_template_code: 'SMS_7221331'
+    sms_template_code: sms_config.sms_template_code
   }, function( response){
     if(!response) {
       console.log(response);
@@ -110,13 +110,13 @@ router.post('/sendAll', function(req, res) {
   }
 
   // todo code
-  // 判断 验证码是否正确
-  //if (!(code == req.session.code && phone == req.session.phone)) {
-  //  return res.json({
-  //    code: 2,
-  //    msg: 'error code'
-  //  });
-  //}
+   //判断 验证码是否正确
+  if (!(code == req.session.code && phone == req.session.phone)) {
+    return res.json({
+      code: 2,
+      msg: 'error code'
+    });
+  }
 
   console.log('form success');
   // 全部正确之后,存入数据库
@@ -132,12 +132,12 @@ router.post('/sendAll', function(req, res) {
 
     //插入数据
     var post = {
-      name:'name',
-      gender:'gender',
-      college:'college',
-      phone:'phone'
+      name:name,
+      gender:gender,
+      college:college,
+      phone:phone
     };
-    var insert = 'INSERT INTO session_code SET ? ';
+    var insert = 'INSERT INTO session_user SET ? ';
     connection.query(insert,post,  function (err) {
       console.log('insert error: ', err);
       if (err) {
@@ -147,6 +147,7 @@ router.post('/sendAll', function(req, res) {
         });
       } else {
         // 存入成功
+        console.log(post);
         return res.json({
           code: 0,
           msg: 'success'
@@ -182,7 +183,7 @@ router.post('/send_sms', function(req, res, next) {
   }, function(response) {
     // 短信发送后的回调函数
 
-    console.log('===send sms result ', response);
+    console.log('===send sms.js result ', response);
 
     // 1.如果回调函数中,没有得到返回的 respone 参数,则说明发送失败
     if (!response) {

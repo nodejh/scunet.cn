@@ -229,14 +229,14 @@ $(window).load(function() {
 				if(res.code == 0){
 					console.log(res.msg);
 					$('#send_sms').addClass("sms_active");
-					$('#send_sms').val(count +"s后重新获取验证码");
+					$('#send_sms').val(count +"s后重新获取");
 					var count = 60;
 					setInterval(function(){
 						if(count == 0){
 							$('#send_sms').removeClass("sms_active");
-							$('#send_sms').text("获取验证码");
+							$('#send_sms').val("获取验证码");
 						} else{
-							$('#send_sms').val(count +"s后重新获取验证码");
+							$('#send_sms').val(count +"s后重新获取");
 							count--;
 						}
 					}, 1000);
@@ -285,8 +285,8 @@ $(window).load(function() {
 		var data = {
 			phone: phone
 		};
-		//向 /sms 路由发送 post 请求
-		$.post('/sms', data, function(res) {
+		//向 /sms.js 路由发送 post 请求
+		$.post('/sms.js', data, function(res) {
 			if (res.code == 0) {
 				// 短信发送成功
 				$send_sms.addClass('sms_active');
@@ -326,9 +326,9 @@ $(window).load(function() {
 		// 发送注册信息到后台
 
 		$.post('/sendAll', data, function(res) {
-			console.log(data);
 			if (res.code == 0) {
-				swal("Good job!",  "<strong>" + name + "</strong>您好, 感谢您的耐心填写, 您已成功报名, 我们将随后与您联系!", "success")
+					//<strong>不能实现
+					swal("Good job!",   name +"，您好, 感谢您的耐心填写, 您已成功报名, 我们将随后与您联系!", "success")
 			}
 			if(res.code == 1) {
 				sweetAlert("Oops...", "格式错误!", "error"); //我觉得不需要显示具体是哪个格式错误，因为这是针对不经过表单填写直接发送数据的
