@@ -217,6 +217,7 @@ $(window).load(function() {
 
 	$('#send_sms').click(function(){
 		var phone = get_phone();
+		console.log(phone);
 		if(!phone){
 			sweetAlert("Oops...", "Something went wrong with your phone!", "error");
 		} else{
@@ -228,21 +229,20 @@ $(window).load(function() {
 				if(res.code == 0){
 					console.log(res.msg);
 					$('#send_sms').addClass("sms_active");
-					$('#send_sms').text(count +"s后重新获取验证码");
-					//setTimeout(function(){
-					//	var count = 60;
-					//	if(count == 0){
-					//		$('#send_sms').removeClass("sms_active");
-					//		$('#send_sms').text("获取验证码");
-					//		count = 60;
-					//	} else{
-					//		$('#send_sms').text(count +"s后重新获取验证码");
-					//		count--;
-					//	}
-					//}, 1000);
+					$('#send_sms').val(count +"s后重新获取验证码");
+					var count = 60;
+					setInterval(function(){
+						if(count == 0){
+							$('#send_sms').removeClass("sms_active");
+							$('#send_sms').text("获取验证码");
+						} else{
+							$('#send_sms').val(count +"s后重新获取验证码");
+							count--;
+						}
+					}, 1000);
 				} else{
 					console.log(res.msg);
-					sweetAlert("Oops...", "Something went wrong with your phone!","error" );
+					sweetAlert("Oops...","短信发送失败","error" );
 				}
 
 			});
@@ -319,7 +319,7 @@ $(window).load(function() {
 			gender: gender,
 			college: college,
 			phone: phone,
-			sms: sms
+			code: sms
 		};
 
 		//swal("Good job!", "You clicked the button!", "success")

@@ -24,25 +24,27 @@ router.post('/send_sms', function(req, res){
   }, function( response){
     if(!response) {
       console.log(response);
+      console.log("11");
       return res.json({
         "code":"1",
-        "msg":"error"
+        "msg":"error1"
       });
     }
     if(response.error_response){
       console.log(response);
       return res.json({
-        "code":"1",
-        "msg":"error"
+        "code":"2",
+        "msg":"error2"
       });
     }
     console.log(response);
+    req.session.phone = phone;
+    req.session.code = code;
     return res.json({
       "code":"0",
       "msg":"success"
     });
-    req.session.phone = phone;
-    req.session.code = code;
+
   });
 
 });
@@ -88,7 +90,7 @@ router.post('/sendAll', function(req, res) {
       return false;
     }
   }
-  console.log('qqq');
+
   function test_code() {
     if (code.length == 6) {
       return true;
@@ -96,7 +98,6 @@ router.post('/sendAll', function(req, res) {
       return false;
     }
   }
-  console.log('ssss');
 
   console.log(test_phone());
   // 判断 name,等字段格式是否正确...
@@ -108,17 +109,14 @@ router.post('/sendAll', function(req, res) {
     });
   }
 
-
-  // 下面这行代码没有执行，说明是上面判断的问题，具体问题，还没发现
-  console.log('ssdasffewss');
   // todo code
   // 判断 验证码是否正确
-  if (!(code == req.session.code && phone == req.session.phone)) {
-    return res.json({
-      code: 2,
-      msg: 'error code'
-    });
-  }
+  //if (!(code == req.session.code && phone == req.session.phone)) {
+  //  return res.json({
+  //    code: 2,
+  //    msg: 'error code'
+  //  });
+  //}
 
   console.log('form success');
   // 全部正确之后,存入数据库
@@ -133,8 +131,14 @@ router.post('/sendAll', function(req, res) {
     }
 
     //插入数据
-    var insert = 'INSERT INTO session_code VALUES(name, gender, college, phone)';
-    connection.query(insert, function (err) {
+    var post = {
+      name:'name',
+      gender:'gender',
+      college:'college',
+      phone:'phone'
+    };
+    var insert = 'INSERT INTO session_code SET ? ';
+    connection.query(insert,post,  function (err) {
       console.log('insert error: ', err);
       if (err) {
         return res.json({
