@@ -18,9 +18,9 @@ router.post('/send_sms', function(req, res){
   //console.log(sms_config);
   app.smsSend({
     sms_free_sign_name:'注册验证', //用sms_config会报错签名不合法
-    sms_param:{"code": code, "product": sms_config.product},
+    sms_param:{"code": code, "product":  '.NET协会'},
     rec_num:phone,
-    sms_template_code: sms_config.sms_template_code
+    sms_template_code: 'SMS_7221331'
   }, function( response){
     if(!response) {
       console.log(response);
@@ -129,31 +129,55 @@ router.post('/sendAll', function(req, res) {
         msg: 'error connection'
       });
     }
-
-    //插入数据
-    var post = {
-      name:name,
-      gender:gender,
-      college:college,
-      phone:phone
-    };
-    var insert = 'INSERT INTO session_user SET ? ';
-    connection.query(insert,post,  function (err) {
-      console.log('insert error: ', err);
-      if (err) {
+    //查询手机号是否已存在
+    var select = 'SELECT * FROM session_user';
+    connection.query(select, function(err, raws){
+      if(err){
         return res.json({
-          code: 4,
-          msg: 'error insert'
+          code:5,
+          msg:"error select"
         });
-      } else {
-        // 存入成功
-        console.log(post);
-        return res.json({
-          code: 0,
-          msg: 'success'
+      } else{
+         var i= 0;
+        console.log(raws);
+         var countPhone = raws.length;
+         for(;i < countPhone; i++){
+           if(phone == raws[i].phone) {
+             return res.json({
+               code: 6,
+               msg: "repeated phone"
+             });
+           }
+         }
+        //插入数据
+        var post = {
+          name:name,
+          gender:gender,
+          college:college,
+          phone:phone
+        };
+        var insert = 'INSERT INTO session_user SET ? ';
+        connection.query(insert,post,  function (err) {
+          console.log('insert error: ', err);
+          if (err) {
+            return res.json({
+              code: 4,
+              msg: 'error insert'
+            });
+          } else {
+            // 存入成功
+            console.log(post);
+            return res.json({
+              code: 0,
+              msg: 'success'
+            });
+          }
         });
       }
+
     });
+
+
   });
 
 });

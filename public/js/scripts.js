@@ -225,21 +225,26 @@ $(window).load(function() {
 				phone: phone
 			};
 
+			var count = 60;
 			$.post('/send_sms', data, function (res) {
 				if(res.code == 0){
 					console.log(res.msg);
 					$('#send_sms').addClass("sms_active");
 					$('#send_sms').val(count +"s后重新获取");
-					var count = 60;
-					setInterval(function(){
+
+					var int = setInterval(function(){
 						if(count == 0){
 							$('#send_sms').removeClass("sms_active");
 							$('#send_sms').val("获取验证码");
+							window.clearInterval(int);
 						} else{
 							$('#send_sms').val(count +"s后重新获取");
 							count--;
 						}
 					}, 1000);
+					//60s后，按钮变成之前的样子，但是这里还在执行啊…………
+
+
 				} else{
 					console.log(res.msg);
 					sweetAlert("Oops...","短信发送失败","error" );
@@ -338,6 +343,9 @@ $(window).load(function() {
 			}
 			if(res.code == 3 || res.code == 4){
 				sweetAlert("Oops...", "连接数据库失败!", "error");
+			}
+			if(res.code == 6){
+				sweetAlert("Oops...","手机号已注册！","error");
 			}
 		});
 
