@@ -17,7 +17,7 @@ router.post('/send_sms', function(req, res){
   var code = Math.random().toString().substr(2,6);
   //console.log(sms_config);
   app.smsSend({
-    sms_free_sign_name:'注册验证', //用sms_config会报错签名不合法
+    sms_free_sign_name:'注册验证', //!!!!!用sms_config会报错签名不合法
     sms_param:{"code": code, "product":  '.NET协会'},
     rec_num:phone,
     sms_template_code: 'SMS_7221331'
