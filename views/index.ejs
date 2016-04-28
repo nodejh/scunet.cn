@@ -27,10 +27,7 @@
       <body id="top">
 
       <div class="loading" id="loading">
-        <div class="spinner">
-          <div class="double-bounce1"></div>
-          <div class="double-bounce2"></div>
-        </div>
+        <div class="spinner"></div>
       </div>
 
       <div id="content" style="display: none;">
@@ -70,8 +67,8 @@
               </div>
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 text-center">
-                  <a href="#subscribe" class="learn-more-btn">Join Us</a><br/>
-                  <a href="#intro" class="down-arrow-a"><i class="fa fa-chevron-down"></i></a>
+                  <a href="#subscribe" class="learn-more-btn animated fadeInUp delay-05s">Join Us</a><br/>
+                  <a href="#intro" class="down-arrow-a animated fadeInUp delay-05s"><i class="fa fa-chevron-down"></i></a>
                 </div>
               </div>
             </div>
@@ -187,7 +184,7 @@
           <div class="container">
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
-                <h1> <span class="tips-margin">我们来晚了 </span><em class="tips-small">但</em> 我们终于来了</h1>
+                <h1> <span class="tips-margin">我们来晚了 </span>但我们终于来了</h1>
                 <a href="#portfolio" class="down-arrow-btn"><i class="fa fa-chevron-down"></i></a>
               </div>
             </div>
@@ -481,7 +478,7 @@
         <script type="text/javascript" src="/js/scripts.js"></script>
         <script type="text/javascript">
           $(window).load(function(){
-            $('#loading').remove();
+            $('#loading').fadeIn(3000).hide();
             $('#content').show();
           });
         </script>
