@@ -26,14 +26,14 @@
 
       <body id="top">
 
-      <!--<div class="loading" id="loading">-->
-        <!--<div class="spinner">-->
-          <!--<div class="dot1"></div>-->
-          <!--<div class="dot2"></div>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="loading" id="loading">
+        <div class="spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+      </div>
 
-
+      <div id="conent" style="display: none;">
         <header id="home">
           <nav>
             <div class="container-fluid">
@@ -467,6 +467,9 @@
             </div>
           </div>
         </footer>
+      </div>
+
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script type="text/javascript" src="/js/jquery.1.8.3.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -477,8 +480,11 @@
         <script type="text/javascript" src="/js/sweetalert.min.js"></script>
         <script type="text/javascript" src="/js/scripts.js"></script>
         <script type="text/javascript">
-          //$('#loading').remove();
-          //location.hash="#top";
+          function loading() {
+            $('#loading').remove();
+            $('#conent').show();
+          }
+          window.onload = loading;
         </script>
       </body>
     </html>
