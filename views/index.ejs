@@ -8,6 +8,7 @@
     <meta name="content" content="四川大学.NET协会官网|四川大学.NET协会招新|.NET/PHP/Node.js/JavaScript/HTML/CSS">
     <title>SCUNET - 四川大学.NET协会</title>
     <link rel="shortcut icon" type="image/png" href="/img/favicon.ico"/>
+    <link href="/css/loading.css" rel="stylesheet" type="text/css">
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="/css/flexslider.css" rel="stylesheet" type="text/css">
@@ -22,7 +23,17 @@
     <script src="/js/respond.min.js"></script>
     <![endif]-->
   </head>
+
       <body id="top">
+
+      <div class="loading" id="loading">
+        <div class="spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+      </div>
+
+
         <header id="home">
           <nav>
             <div class="container-fluid">
@@ -267,7 +278,7 @@
                           </ul>
                         </div>
                       </div>
-                      
+
                       <div class="col-md-4 wp5 delay-05s">
                         <img src="/img/team-02.png" alt="Team Member">
                         <h2>朱能军</h2>
@@ -294,7 +305,7 @@
                           </ul>
                         </div>
                       </div>
-                      
+
                     </li>
                     <li>
                       <div class="col-md-4 wp5">
@@ -438,7 +449,7 @@
                   <li><a href="#" class="social-btn"><i class="fa fa-dribbble"></i></a></li>
                   <li><a href="#" class="social-btn"><i class="fa fa-user"></i></a></li>
                   <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                  
+
                 </ul>
               </div>
             </div>
@@ -465,5 +476,9 @@
         <script type="text/javascript" src="/js/modernizr.js"></script>
         <script type="text/javascript" src="/js/sweetalert.min.js"></script>
         <script type="text/javascript" src="/js/scripts.js"></script>
+        <script type="text/javascript">
+          $('#loading').remove();
+          location.hash="#top";
+        </script>
       </body>
     </html>
