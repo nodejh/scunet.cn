@@ -312,17 +312,21 @@ Subscribe
 		width: 80%;
 		height: 40px;
 		padding: 10px;
+		border-radius: 0;
 	}
 	.subscribe select, .subscribe option {
 		height: 40px;
 		padding: 10px;
+        border-radius: 0;
 	}
 	.subscribe input[type=button], .subscribe button {
 		height: 40px;
 		padding: 10px;
+        border-radius: 0;
 	}
 	.subscribe input[type=text].sms {
 		width: 45%;
+        border-radius: 0;
 	}
 	.subscribe input[type=button].send_sms {
 		width: 35%;
