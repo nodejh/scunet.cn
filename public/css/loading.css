@@ -6,38 +6,31 @@
     position: fixed;
 }
 .spinner {
-    margin: 40% auto;
-    width: 90px;
-    height: 90px;
-    position: relative;
-    text-align: center;
+    width: 60px;
+    height: 60px;
 
-    -webkit-animation: rotate 2.0s infinite linear;
-    animation: rotate 2.0s infinite linear;
+    position: relative;
+    margin: 100px auto;
 }
 
-.dot1, .dot2 {
-    width: 60%;
-    height: 60%;
-    display: inline-block;
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #67CF22;
+    opacity: 0.6;
     position: absolute;
     top: 0;
-    background-color: #67CF22;
-    border-radius: 100%;
+    left: 0;
 
     -webkit-animation: bounce 2.0s infinite ease-in-out;
     animation: bounce 2.0s infinite ease-in-out;
 }
 
-.dot2 {
-    top: auto;
-    bottom: 0px;
+.double-bounce2 {
     -webkit-animation-delay: -1.0s;
     animation-delay: -1.0s;
 }
-
-@-webkit-keyframes rotate { 100% { -webkit-transform: rotate(360deg) }}
-@keyframes rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
 
 @-webkit-keyframes bounce {
     0%, 100% { -webkit-transform: scale(0.0) }
