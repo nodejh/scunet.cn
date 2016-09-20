@@ -8,8 +8,6 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var mysql = require('mysql');
 var myConnection = require('express-myconnection');
-var mySqlConnection = require('./config/mysql');
-
 var app = express();
 
 // view engine setup
@@ -29,11 +27,18 @@ app.use(session({
   secret: 'keyboard cat',
   cookie: {maxAge: 60000},
   proxy: true,
-  resave: true
+  resave: true,
+  saveUninitialized:true
 }));
+dbOptions = {
+  host: 'localhost',
+  user: 'root',
+  password: '123456',
+  port: 3306,
+  database: 'scunet'
+};
 
-
-app.use(myConnection(mysql,mySqlConnection, 'request'));
+app.use(myConnection(mysql,dbOptions, 'request'));
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -61,7 +66,8 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.render('error', 
+      {
     message: err.message,
     error: {}
   });

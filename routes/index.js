@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
-
 var sms_config = require('../config/sms');
 var App = require('alidayu-node');
 var app = new App(sms_config.app_key, sms_config.app_secret);
